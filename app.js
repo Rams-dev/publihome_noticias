@@ -140,7 +140,7 @@ function fillDomNews2(data){
         }
 }
 
-   getNewscatcher()
+//    getNewscatcher()
 
 
 
@@ -156,7 +156,7 @@ window.frm_sus.addEventListener("submit", function(e){
 window.onscroll = (e) =>{
     let page = 2;
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-        getNewscatcher("",page);
+        // getNewscatcher("",page);
         page++
     }
 }
