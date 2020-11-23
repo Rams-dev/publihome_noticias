@@ -91,10 +91,9 @@ function getNewsMediaStack(){
 
 
 
-async function getNewscatcher(){
+async function getNewscatcher(val = "", page = 1){
     keyCatcher ="383ad32b14mshd63195d015ea45cp11698bjsn5dd5fb680116";
-
-    const res = await fetch("https://newscatcher.p.rapidapi.com/v1/search_free?q=oaxaca&media=True&lang=es&page=mx",{
+    const res = await fetch(`https://newscatcher.p.rapidapi.com/v1/search?q=oaxaca&media=True&sort_by=date&topic=${val}&lang=es&country=mx&page=${page}`,{
         "method": "GET",
         "headers": {
             "x-rapidapi-key": keyCatcher,
@@ -112,7 +111,6 @@ function fillDomNews2(data){
     console.log(data)
     const componentNew = document.querySelector("#componentNew");
             for(let i = 0; i<data.length;i++){
-            // console.log(data[i]["author"])
             componentNew.innerHTML += `
             <div class="col-md-4 mt-2">
             <div class="card">
@@ -125,7 +123,7 @@ function fillDomNews2(data){
                     </div>
                 </div>
                 <div class="imge">
-                    <img src="${data[i]["media"] != "null" ? data[i]["media"] : "https://www.google.com/url?sa=i&url=https%3A%2F%2Foscaps.mx%2Fproductos.php%3Fid_categoria%3D4&psig=AOvVaw38CFJFuLpJNjhKWIDlS64k&ust=1605995373536000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNiO1pGNku0CFQAAAAAdAAAAABAD" }" alt="" class="img_imagen">
+                    <img src="${data[i]["media"] != null ? data[i]["media"] : "./assets/imagen_no_disponible.png" }" alt="" class="img_imagen">
                 </div>  
                 <div class="body">
                     <div class="sumary">
@@ -139,11 +137,10 @@ function fillDomNews2(data){
         </div>
         
             `
-    //  });
         }
 }
 
- getNewscatcher()
+   getNewscatcher()
 
 
 
@@ -155,6 +152,14 @@ window.frm_sus.addEventListener("submit", function(e){
     sendDataServer(formData);
 })
 
+
+window.onscroll = (e) =>{
+    let page = 2;
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+        getNewscatcher("",page);
+        page++
+    }
+}
 
 const errortelefono = document.querySelector("#errortelefono")
 const errornombre = document.querySelector("#errornombre")
@@ -222,7 +227,19 @@ function showModalSus(){
     }
 }
 
+// const btnDeportes = document.querySelector("#deportes")
+// const btnPolitica = document.querySelector("#politica")
 
+// btnDeportes.addEventListener('click',function(e){
+//     e.preventDefault;
+//     getNewscatcher("sport")
+// })
+
+// btnPolitica.addEventListener('click',function(e){
+//     e.preventDefault;
+//     getNewscatcher("politics")
+
+// })
 
 
 

@@ -1,5 +1,6 @@
 /* ----------------------------------- N A V B A R ----------------------------------- */
-.nav{
+.navb{
+    display: flex;
     background: black;
     border-bottom: 6px solid red;
     position: fixed;
@@ -15,10 +16,23 @@
 }
 
 .ul{
+    display: flex;
     margin: auto 10px;
     margin-left: auto;
     /* padding: 20px; */
 }
+
+li{
+    text-decoration: none;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+li:last-child{
+    margin-left: 20px;;
+}
+
+
 
 /* ----------------------------------       V I D E O       --------------------------------------------- */
 .video{
@@ -142,3 +156,13 @@ a:hover{
 .modal_logo{
     width: 40px;
 }
+
+
+/* ------------------------ M E D I A   Q U E R I E S -------------------------------------- */
+
+
+@media (max-width: 600px){
+
+    
+}
+
