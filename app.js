@@ -1,95 +1,3 @@
-const KEY = "861600999a2f42908a1f70af0d278377";
-async function getNews(){
-    let response = await fetch(`http://newsapi.org/v2/top-headlines?country=mx&apiKey=${KEY}`);
-    let res =  await response.json();
-    console.log(res)
-    fillDomNews(res.articles)
-}
-
-function fillDomNews(data){
-    console.log(data)
-    const componentNew = document.querySelector("#componentNew");
-            for(let i = 0; i<data.length;i++){
-            // console.log(data[i]["author"])
-            componentNew.innerHTML += `
-                <div class="card col-md-3 mt-3 mx-2";">
-                <div class="card-header">
-                <div class="text-end">
-                <smal class="text-end">${data[i]["published_date"]}<small>
-                </div>
-                </div>
-                    <img src="${data[i]["media"]}" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title"></h5>
-                        <p class="card-text">${data[i]["title"]}.</p>
-                        <p class="text-primary">Author:  ${data[i]["author"]} </p>
-                        <a href="${data[i]["link"]}" target="_blank" class="btn btn-primary btn-block">Nota</a>
-                    </div>
-                </div>
-        
-            `
-    //  });
-        }
-}
-
-// getNews();
-
-async function getNews2(){
-    const response = await fetch("https://contextualwebsearch-websearch-v1.p.rapidapi.com/api/search/NewsSearchAPI?pageSize=50&q=oaxaca&autoCorrect=true&pageNumber=1&language=es&toPublishedDate=null&fromPublishedDate=null", {
-        "method": "GET",
-        "headers": {
-            "x-rapidapi-key": "383ad32b14mshd63195d015ea45cp11698bjsn5dd5fb680116",
-            "x-rapidapi-host": "contextualwebsearch-websearch-v1.p.rapidapi.com"
-        }
-    })
-    let res = await response.json();
-    console.log(res);
-    // .then(response => {
-    //     console.log(response);
-    // })
-    // .catch(err => {
-    //     console.error(err);
-    // });
-}
-
-
-// getNews2();
-
-
-async function getNewsQ(){
-    let url = `https://newsapi.org/v2/top-headlines?country=mx&apiKey=${KEY}`
-    let response = await fetch(url);
-    let res =  await response.json();
-    console.log(res)
-     fillDomNews(res.articles)
-}
-
-
-// getNewsQ()
-
-
-
-function getNewsMediaStack(){
-    let keyMS = "663382fcf7f02eeca1c66fe273c78a23"
-    $.ajax({
-        url: 'http://api.mediastack.com/v1/news',
-        data: {
-        access_key: keyMS,
-        languages: 'es',
-        countries: 'mx',
-        limit: 30,
-        offset: 30,
-        keywords:"oaxaca"
-        }
-    }).done(function(data) {
-        // let response = JSON.parse(data)
-        console.log(data);
-    });
-
-}
-// getNewsMediaStack()
-
-
 
 async function getNewscatcher(val = "", page = 1){
     keyCatcher ="383ad32b14mshd63195d015ea45cp11698bjsn5dd5fb680116";
@@ -112,7 +20,7 @@ function fillDomNews2(data){
     const componentNew = document.querySelector("#componentNew");
             for(let i = 0; i<data.length;i++){
             componentNew.innerHTML += `
-            <div class="col-md-4 mt-2">
+            <div class="col-md-4 col-lg-4 col-sm-6 mt-2">
             <div class="card">
                 <div class="header">
                     <div class="title">
@@ -140,9 +48,15 @@ function fillDomNews2(data){
         }
 }
 
-//    getNewscatcher()
+    getNewscatcher()
 
+const btnModalSus = document.querySelector("#btnModalSus")
+btnModalSus.addEventListener('click', function(e){
+    e.preventDefault();
+    $("suscripcion").modal("show")
+    count--;
 
+})
 
 window.frm_sus.addEventListener("submit", function(e){
     e.preventDefault();
@@ -156,13 +70,14 @@ window.frm_sus.addEventListener("submit", function(e){
 window.onscroll = (e) =>{
     let page = 2;
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-        // getNewscatcher("",page);
+        getNewscatcher("",page);
         page++
     }
 }
 
 const errortelefono = document.querySelector("#errortelefono")
 const errornombre = document.querySelector("#errornombre")
+const msg =  document.querySelector(".msg");
 async function sendDataServer(data){
     const response = await fetch("./server/getData.php",{
         method:"post",
@@ -171,13 +86,29 @@ async function sendDataServer(data){
     const res = await response.json();
     console.log(res);
     // window.suscripcion.modal("hide")
-    if(res == "ok"){
+    if(res.ok){
+        msg.innerHTML = `
+        <div class="alert alert-primary text-center" role="alert">
+             <small class="text-center">${res.ok}</small>
+        </div>
+        ` 
         // setInterval(()=>{
         //     console.log("hola")
 
         // },1000)
-        $("#suscripcion").modal("hide");
-    }else{
+        // $("#suscripcion").modal("hide");
+    }
+    if(res.existe){
+        msg.innerHTML = `
+        <div class="alert text-center alert-danger alert-dismissible fade show" role="alert">
+            <small class="text-center">${res.existe}</small>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+             <span aria-hidden="true">&times;</span>
+             
+        </div>
+        `
+
+    }
         for(let i=0; i<res.length;i++){
             if(res[i].nombre){
                 console.log(res[i].nombre)
@@ -190,7 +121,15 @@ async function sendDataServer(data){
                 window.telefono.classList.add('is-invalid')
             }
         }
+
+    if(res.fail){
+        msg.innerHTML = `
+        <div class="alert alert-danger" role="alert">
+             ${res.fail}
+        </div>
+        ` 
     }
+
 }
 
 const video = document.querySelector("#video");
