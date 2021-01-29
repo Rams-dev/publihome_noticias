@@ -67,13 +67,13 @@ window.frm_sus.addEventListener("submit", function(e){
 })
 
 
-window.onscroll = (e) =>{
-    let page = 2;
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-        getNewscatcher("",page);
-        page++
-    }
-}
+// window.onscroll = (e) =>{
+//     let page = 2;
+//     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+//         // getNewscatcher("",page);
+//         page++
+//     }
+// }
 
 const errortelefono = document.querySelector("#errortelefono")
 const errornombre = document.querySelector("#errornombre")
